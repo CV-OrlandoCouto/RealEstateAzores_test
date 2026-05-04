@@ -1,0 +1,178 @@
+{
+  "entities": {
+    "LocalizedString": {
+      "title": "LocalizedString",
+      "description": "Text in multiple languages.",
+      "type": "object",
+      "properties": {
+        "pt": { "type": "string" },
+        "en": { "type": "string" }
+      },
+      "required": ["pt", "en"]
+    },
+    "PropertyImage": {
+      "title": "PropertyImage",
+      "description": "Image of a property.",
+      "type": "object",
+      "properties": {
+        "url": { "type": "string" },
+        "isPublic": { "type": "boolean" },
+        "isCover": { "type": "boolean" },
+        "category": { "type": "string", "enum": ["principais", "sala", "quartos", "casas_de_banho", "cozinha", "exterior", "plantas", "arredores"] }
+      },
+      "required": ["url", "isPublic", "isCover"]
+    },
+    "Property": {
+      "title": "Property",
+      "description": "A real estate property listing.",
+      "type": "object",
+      "properties": {
+        "reference": { "type": "string" },
+        "title": { "$ref": "#/entities/LocalizedString" },
+        "description": { "$ref": "#/entities/LocalizedString" },
+        "price": { "type": "number" },
+        "oldPrice": { "type": "number" },
+        "location": { "type": "string" },
+        "tags": { 
+          "type": "array",
+          "items": { "$ref": "#/entities/LocalizedString" }
+        },
+        "images": {
+          "type": "array",
+          "items": { "$ref": "#/entities/PropertyImage" }
+        },
+        "features": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "string" },
+              "name": { "$ref": "#/entities/LocalizedString" },
+              "isPublic": { "type": "boolean" },
+              "value": { "type": ["string", "number", "boolean"] }
+            },
+            "required": ["id", "name", "isPublic", "value"]
+          }
+        },
+        "seoTitle": { "$ref": "#/entities/LocalizedString" },
+        "seoDescription": { "$ref": "#/entities/LocalizedString" },
+        "isPublic": { "type": "boolean" },
+        "createdAt": { "type": "number" },
+        "updatedAt": { "type": "number" }
+      },
+      "required": ["title", "description", "price", "location", "tags", "images", "features", "isPublic", "createdAt", "updatedAt"]
+    },
+    "Lead": {
+      "title": "Lead",
+      "description": "Contact form submission.",
+      "type": "object",
+      "properties": {
+        "propertyId": { "type": "string" },
+        "name": { "type": "string" },
+        "email": { "type": "string" },
+        "phone": { "type": "string" },
+        "message": { "type": "string" },
+        "createdAt": { "type": "number" }
+      },
+      "required": ["propertyId", "name", "email", "phone", "createdAt"]
+    },
+    "CrmLead": {
+      "title": "CRM Lead",
+      "description": "Leads managed in the CRM.",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "email": { "type": "string" },
+        "phone": { "type": "string" },
+        "source": { "type": "string" },
+        "status": { "type": "string" },
+        "date": { "type": "string" },
+        "createdAt": { "type": "number" },
+        "updatedAt": { "type": "number" }
+      },
+      "required": ["name", "createdAt", "updatedAt"]
+    },
+    "Testimonial": {
+      "title": "Testimonial",
+      "description": "Client testimonials to show on the public site.",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "title": { "type": "string" },
+        "text": { "type": "string" },
+        "imageUrl": { "type": "string" },
+        "createdAt": { "type": "number" }
+      },
+      "required": ["name", "title", "text", "imageUrl", "createdAt"]
+    },
+    "SeoSettings": {
+      "title": "SEO Settings",
+      "description": "SEO settings for the site",
+      "type": "object",
+      "properties": {
+        "titlePt": { "type": "string" },
+        "descriptionPt": { "type": "string" },
+        "keywordsPt": { "type": "string" },
+        "titleEn": { "type": "string" },
+        "descriptionEn": { "type": "string" },
+        "keywordsEn": { "type": "string" },
+        "updatedAt": { "type": "number" }
+      },
+      "required": ["titlePt", "descriptionPt", "keywordsPt", "titleEn", "descriptionEn", "keywordsEn", "updatedAt"]
+    },
+    "SocialSettings": {
+      "title": "Social Settings",
+      "description": "Social media links for the site",
+      "type": "object",
+      "properties": {
+        "facebookUrl": { "type": "string" },
+        "instagramUrl": { "type": "string" },
+        "linkedinUrl": { "type": "string" },
+        "updatedAt": { "type": "number" }
+      },
+      "required": ["facebookUrl", "instagramUrl", "linkedinUrl", "updatedAt"]
+    },
+    "BlogPost": {
+      "title": "Blog Post",
+      "description": "Blog posts for the Blog Açores section.",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "author": { "type": "string" },
+        "imageUrl": { "type": "string" },
+        "content": { "type": "string" },
+        "date": { "type": "string" },
+        "isPublished": { "type": "boolean" },
+        "createdAt": { "type": "number" }
+      },
+      "required": ["title", "author", "imageUrl", "content", "date", "isPublished", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/properties/{propertyId}": {
+      "schema": "#/entities/Property",
+      "description": "Stores the property listings."
+    },
+    "/leads/{leadId}": {
+      "schema": "#/entities/Lead",
+      "description": "Stores inquiries from the contact form."
+    },
+    "/crmLeads/{leadId}": {
+      "schema": "#/entities/CrmLead",
+      "description": "Stores CRM leads managed by administrators."
+    },
+    "/testimonials/{testimonialId}": {
+      "schema": "#/entities/Testimonial",
+      "description": "Stores client testimonials."
+    },
+    "/settings/{settingId}": {
+      "schema": "#/entities/SeoSettings",
+      "description": "Stores site settings."
+    },
+    "/blogPosts/{postId}": {
+      "schema": "#/entities/BlogPost",
+      "description": "Stores blog posts for the Blog Açores."
+    }
+  }
+}
+

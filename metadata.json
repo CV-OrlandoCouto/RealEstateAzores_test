@@ -1,0 +1,8 @@
+{
+  "name": "Carla Duarte Almeida - Real Estate Azores",
+  "description": "Premium real estate platform with multilingual support, lead capture, and a built-in CMS.",
+  "requestFramePermissions": [
+    "geolocation"
+  ],
+  "majorCapabilities": []
+}
